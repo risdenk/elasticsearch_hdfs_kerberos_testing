@@ -17,4 +17,12 @@ echo
 echo "Check HDFS repository"
 curl --fail -i -H 'Content-type: application/json' -H 'Accept: application/json' "http://localhost:$(docker-compose port elasticsearch 9200 | cut -d':' -f 2)/_snapshot/my_hdfs_repository/_all?pretty" || docker-compose logs elasticsearch
 echo
+echo
+echo "Create snapshot"
+curl --fail -i -H 'Content-type: application/json' -H 'Accept: application/json' -XPUT "http://localhost:$(docker-compose port elasticsearch 9200 | cut -d':' -f 2)/_snapshot/my_hdfs_repository/snapshot_1?wait_for_completion=true" || docker-compose logs elasticsearch
+echo
+echo
+echo "Check HDFS repository"
+curl --fail -i -H 'Content-type: application/json' -H 'Accept: application/json' "http://localhost:$(docker-compose port elasticsearch 9200 | cut -d':' -f 2)/_snapshot/my_hdfs_repository/_all?pretty" || docker-compose logs elasticsearch
+echo
 
