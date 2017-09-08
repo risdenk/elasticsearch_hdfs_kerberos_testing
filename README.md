@@ -5,7 +5,7 @@
 ## Getting Started
 1. `docker network create example.com`
 2. `docker-compose up -d`
-3. `./run_test.shh`
+3. `./run_test.sh`
 5. `docker-compose down -v --remove-orphans --rmi=all`
 6. `docker network rm example.com`
 
