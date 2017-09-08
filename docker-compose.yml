@@ -1,0 +1,75 @@
+version: '2'
+services:
+  namenode:
+    image: uhopper/hadoop-namenode:2.7.2
+    environment:
+    - HADOOP_OPTS=-Djava.security.krb5.conf=/etc/docker-kdc/krb5.conf
+    - CLUSTER_NAME=elasticsearch_hdfs_kerberos_testing
+    - CORE_CONF_hadoop_security_authentication=kerberos
+    - CORE_CONF_dfs_namenode_kerberos_principal=hdfs/namenode.example.com@EXAMPLE.COM
+    - CORE_CONF_dfs_namenode_keytab_file=/etc/docker-kdc/nn.service.keytab
+    - CORE_CONF_hadoop_security_auth__to__local=DEFAULT
+    - HDFS_CONF_dfs_webhdfs_enabled=false
+    ports:
+    - "50070"
+    volumes_from:
+    - kdc
+    depends_on:
+    - kdc
+
+  datanode:
+    image: risdenk/elasticsearch_hdfs_kerberos_testing:datanode
+    environment:
+    - HADOOP_OPTS=-Djava.security.krb5.conf=/etc/docker-kdc/krb5.conf
+    - CORE_CONF_fs_defaultFS=hdfs://namenode.example.com:8020
+    - CORE_CONF_hadoop_security_authentication=kerberos
+    - CORE_CONF_dfs_datanode_kerberos_principal=hdfs/datanode.example.com@EXAMPLE.COM
+    - CORE_CONF_dfs_datanode_keytab_file=/etc/docker-kdc/dn.service.keytab
+    - CORE_CONF_hadoop_security_auth__to__local=DEFAULT
+    - HDFS_CONF_dfs_datanode_address=0.0.0.0:1004
+    - HDFS_CONF_dfs_datanode_http_address=0.0.0.0:1006
+    - HADOOP_SECURE_DN_USER=root
+    - HADOOP_SECURE_DN_PID_DIR=/var/run/hadoop
+    - HADOOP_SECURE_DN_LOG_DIR=/var/log/hadoop
+    - JSVC_HOME=/usr/lib/bigtop-utils
+    volumes_from:
+    - kdc
+    depends_on:
+    - kdc
+    privileged: true
+
+  kdc:
+    image: risdenk/elasticsearch_hdfs_kerberos_testing:kdc
+    ports:
+    - "88"
+    - "88/udp"
+    volumes:
+    - /etc/docker-kdc
+
+  elasticsearch:
+    image: risdenk/elasticsearch_hdfs_kerberos_testing:elasticsearch
+    ports:
+    - "9200"
+    environment:
+      - cluster.name=docker-cluster
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - xpack.security.enabled=false
+      - xpack.monitoring.enabled=false
+      - xpack.graph.enabled=false
+      - xpack.watcher.enabled=false
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    mem_limit: 1g
+    volumes_from:
+    - kdc
+    depends_on:
+    - kdc
+
+networks:
+  default:
+    external:
+      name: example.com
+
