@@ -59,9 +59,11 @@ services:
       - xpack.monitoring.enabled=false
       - xpack.graph.enabled=false
       - xpack.watcher.enabled=false
+      - xpack.ml.enabled=false
       - node.master=true
       - node.data=false
       - node.ingest=false
+      - node.ml=false
       - "discovery.zen.ping.unicast.hosts=elasticsearch"
     ulimits:
       memlock:
@@ -86,9 +88,11 @@ services:
       - xpack.monitoring.enabled=false
       - xpack.graph.enabled=false
       - xpack.watcher.enabled=false
+      - xpack.ml.enabled=false
       - node.master=false
       - node.data=true
       - node.ingest=false
+      - node.ml=false
       - "discovery.zen.ping.unicast.hosts=elasticsearch"
     ulimits:
       memlock:
