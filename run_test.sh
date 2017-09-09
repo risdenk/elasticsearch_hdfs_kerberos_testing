@@ -2,6 +2,7 @@
 
 set -e
 set -u
+#set -x
 
 echo "Wait for Elasticsearch cluster to be ready"
 wget --retry-connrefused --tries=12 -q --wait=5 --spider "http://localhost:$(docker-compose port elasticsearch 9200 | cut -d':' -f2)"
