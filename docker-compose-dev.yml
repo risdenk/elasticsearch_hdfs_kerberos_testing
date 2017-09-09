@@ -10,5 +10,5 @@ services:
 
  elasticsearch:
     build: ./elasticsearch
-    image: risdenk/elasticsearch_hdfs_kerberos_testing:elasticsearch
+    image: risdenk/elasticsearch_hdfs_kerberos_testing:elasticsearch6.0.0-rc1
 

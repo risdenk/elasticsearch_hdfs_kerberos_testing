@@ -47,7 +47,7 @@ services:
     - /etc/docker-kdc
 
   elasticsearch:
-    image: risdenk/elasticsearch_hdfs_kerberos_testing:elasticsearch
+    image: risdenk/elasticsearch_hdfs_kerberos_testing:elasticsearch6.0.0-rc1
     ports:
     - "9200"
     - "4000:4000"
