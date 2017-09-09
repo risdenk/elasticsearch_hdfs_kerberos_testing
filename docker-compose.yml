@@ -54,46 +54,16 @@ services:
     environment:
       - cluster.name=docker-cluster
       - bootstrap.memory_lock=true
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m -Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=4000,suspend=n" #-Djava.security.debug=access,permission=suppressAccessChecks"
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m -Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=4000,suspend=n"
       - xpack.security.enabled=false
       - xpack.monitoring.enabled=false
       - xpack.graph.enabled=false
       - xpack.watcher.enabled=false
       - xpack.ml.enabled=false
       - node.master=true
-      - node.data=false
-      - node.ingest=false
-      - node.ml=false
-      - "discovery.zen.ping.unicast.hosts=elasticsearch"
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
-    mem_limit: 1g
-    volumes_from:
-    - kdc
-    depends_on:
-    - kdc
-
-  elasticsearch-data:
-    image: risdenk/elasticsearch_hdfs_kerberos_testing:elasticsearch
-    ports:
-    - "9200"
-    - "4001:4001"
-    environment:
-      - cluster.name=docker-cluster
-      - bootstrap.memory_lock=true
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m -Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=4001,suspend=n" #-Djava.security.debug=access,permission=suppressAccessChecks"
-      - xpack.security.enabled=false
-      - xpack.monitoring.enabled=false
-      - xpack.graph.enabled=false
-      - xpack.watcher.enabled=false
-      - xpack.ml.enabled=false
-      - node.master=false
       - node.data=true
       - node.ingest=false
       - node.ml=false
-      - "discovery.zen.ping.unicast.hosts=elasticsearch"
     ulimits:
       memlock:
         soft: -1
@@ -103,7 +73,6 @@ services:
     - kdc
     depends_on:
     - kdc
-    - elasticsearch
 
 networks:
   default:
