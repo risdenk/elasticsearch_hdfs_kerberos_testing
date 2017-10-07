@@ -4,7 +4,7 @@ set -e
 set -u
 #set -x
 
-HDFS_CONFIGS="\"conf.dfs.nameservices\": \"mycluster\",\"conf.dfs.client.failover.proxy.provider.mycluster\": \"org.apache.hadoop.hdfs.server.namenode.ha.ConfiguredFailoverProxyProvider\",\"conf.dfs.ha.namenodes.mycluster\": \"nn1,nn2\",\"conf.dfs.namenode.rpc-address.mycluster.nn1\": \"namenode.example.com:8020\",\"conf.dfs.namenode.http-address.mycluster.nn1\": \"namenode.example.com:50070\",\"conf.dfs.namenode.rpc-address.mycluster.nn2\": \"namenode2.example.com:8020\",\"conf.dfs.namenode.http-address.mycluster.nn2\": \"namenode2.example.com:50070\""
+HDFS_CONFIGS="\"conf.dfs.nameservices\": \"mycluster\",\"conf.dfs.client.failover.proxy.provider.mycluster\": \"org.apache.hadoop.hdfs.server.namenode.ha.ConfiguredFailoverProxyProvider\",\"conf.dfs.ha.namenodes.mycluster\": \"nn1,nn2\",\"conf.dfs.namenode.rpc-address.mycluster.nn1\": \"namenode2.example.com:8020\",\"conf.dfs.namenode.http-address.mycluster.nn1\": \"namenode2.example.com:50070\",\"conf.dfs.namenode.rpc-address.mycluster.nn2\": \"namenode.example.com:8020\",\"conf.dfs.namenode.http-address.mycluster.nn2\": \"namenode.example.com:50070\""
 
 echo "Wait for Elasticsearch cluster to be ready"
 wget --retry-connrefused --tries=12 -q --wait=5 --spider "http://localhost:$(docker-compose port elasticsearch 9200 | cut -d':' -f2)"
