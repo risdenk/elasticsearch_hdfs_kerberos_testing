@@ -21,31 +21,31 @@ curl -i -H 'Content-type: application/json' -H 'Accept: application/json' -XDELE
 echo
 echo
 echo "Add HDFS Repository"
-curl --fail -i -H 'Content-type: application/json' -H 'Accept: application/json' -XPUT "http://localhost:$(docker-compose port elasticsearch 9200 | cut -d':' -f 2)/_snapshot/my_hdfs_repository" -d "{\"type\": \"hdfs\", \"settings\": {${HDFS_CONFIGS}, \"uri\": \"hdfs://mycluster/\", \"path\": \"/tmp/my_hdfs_repository\", \"security.principal\": \"hdfs/elasticsearch.example.com@EXAMPLE.COM\"}}" || docker-compose logs elasticsearch
+curl --fail -i -H 'Content-type: application/json' -H 'Accept: application/json' -XPUT "http://localhost:$(docker-compose port elasticsearch 9200 | cut -d':' -f 2)/_snapshot/my_hdfs_repository" -d "{\"type\": \"hdfs\", \"settings\": {${HDFS_CONFIGS}, \"uri\": \"hdfs://mycluster/\", \"path\": \"/tmp/my_hdfs_repository\", \"security.principal\": \"hdfs/elasticsearch.example.com@EXAMPLE.COM\"}}" || (docker-compose logs elasticsearch && exit 1)
 echo
 echo "Check HDFS repository"
-curl --fail -i -H 'Content-type: application/json' -H 'Accept: application/json' "http://localhost:$(docker-compose port elasticsearch 9200 | cut -d':' -f 2)/_snapshot/my_hdfs_repository/_all?pretty" || docker-compose logs elasticsearch
+curl --fail -i -H 'Content-type: application/json' -H 'Accept: application/json' "http://localhost:$(docker-compose port elasticsearch 9200 | cut -d':' -f 2)/_snapshot/my_hdfs_repository/_all?pretty" || (docker-compose logs elasticsearch && exit 1)
 echo
 echo
 echo "Create snapshot"
-curl --fail -i -H 'Content-type: application/json' -H 'Accept: application/json' -XPUT "http://localhost:$(docker-compose port elasticsearch 9200 | cut -d':' -f 2)/_snapshot/my_hdfs_repository/snapshot_1?wait_for_completion=true" || docker-compose logs elasticsearch
+curl --fail -i -H 'Content-type: application/json' -H 'Accept: application/json' -XPUT "http://localhost:$(docker-compose port elasticsearch 9200 | cut -d':' -f 2)/_snapshot/my_hdfs_repository/snapshot_1?wait_for_completion=true" || (docker-compose logs elasticsearch && exit 1)
 echo
 echo
 echo "Check HDFS repository"
-curl --fail -i -H 'Content-type: application/json' -H 'Accept: application/json' "http://localhost:$(docker-compose port elasticsearch 9200 | cut -d':' -f 2)/_snapshot/my_hdfs_repository/_all?pretty" || docker-compose logs elasticsearch
+curl --fail -i -H 'Content-type: application/json' -H 'Accept: application/json' "http://localhost:$(docker-compose port elasticsearch 9200 | cut -d':' -f 2)/_snapshot/my_hdfs_repository/_all?pretty" || (docker-compose logs elasticsearch && exit 1)
 echo
 echo
 echo "Delete HDFS Repository"
-curl --fail -i -H 'Content-type: application/json' -H 'Accept: application/json' -XDELETE "http://localhost:$(docker-compose port elasticsearch 9200 | cut -d ':' -f 2)/_snapshot/my_hdfs_repository" || docker-compose logs elasticsearch
+curl --fail -i -H 'Content-type: application/json' -H 'Accept: application/json' -XDELETE "http://localhost:$(docker-compose port elasticsearch 9200 | cut -d ':' -f 2)/_snapshot/my_hdfs_repository" || (docker-compose logs elasticsearch && exit 1)
 echo
 echo
 echo "Add 2nd HDFS Repository"
-curl --fail -i -H 'Content-type: application/json' -H 'Accept: application/json' -XPUT "http://localhost:$(docker-compose port elasticsearch 9200 | cut -d':' -f 2)/_snapshot/readonly_hdfs_repository" -d "{\"type\": \"hdfs\", \"settings\": {${HDFS_CONFIGS}, \"uri\": \"hdfs://mycluster/\", \"path\": \"/tmp/my_hdfs_repository\", \"security.principal\": \"hdfs/elasticsearch.example.com@EXAMPLE.COM\", \"readonly\": true}}" || docker-compose logs elasticsearch
+curl --fail -i -H 'Content-type: application/json' -H 'Accept: application/json' -XPUT "http://localhost:$(docker-compose port elasticsearch 9200 | cut -d':' -f 2)/_snapshot/readonly_hdfs_repository" -d "{\"type\": \"hdfs\", \"settings\": {${HDFS_CONFIGS}, \"uri\": \"hdfs://mycluster/\", \"path\": \"/tmp/my_hdfs_repository\", \"security.principal\": \"hdfs/elasticsearch.example.com@EXAMPLE.COM\", \"readonly\": true}}" || (docker-compose logs elasticsearch && exit 1)
 echo
 echo
 echo "Check HDFS repository"
-curl --fail -i -H 'Content-type: application/json' -H 'Accept: application/json' "http://localhost:$(docker-compose port elasticsearch 9200 | cut -d':' -f 2)/_snapshot/readonly_hdfs_repository/_all?pretty" || docker-compose logs elasticsearch
+curl --fail -i -H 'Content-type: application/json' -H 'Accept: application/json' "http://localhost:$(docker-compose port elasticsearch 9200 | cut -d':' -f 2)/_snapshot/readonly_hdfs_repository/_all?pretty" || (docker-compose logs elasticsearch && exit 1)
 echo
-curl --fail -i -H 'Content-type: application/json' -H 'Accept: application/json' -XDELETE "http://localhost:$(docker-compose port elasticsearch 9200 | cut -d ':' -f 2)/_snapshot/readonly_hdfs_repository" || docker-compose logs elasticsearch
+curl --fail -i -H 'Content-type: application/json' -H 'Accept: application/json' -XDELETE "http://localhost:$(docker-compose port elasticsearch 9200 | cut -d ':' -f 2)/_snapshot/readonly_hdfs_repository" || (docker-compose logs elasticsearch && exit 1)
 echo
 
