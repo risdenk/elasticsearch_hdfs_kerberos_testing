@@ -1,5 +1,13 @@
 version: '2'
 services:
+ namenode:
+    build: ./namenode
+    image: risdenk/elasticsearch_hdfs_kerberos_testing:namenode
+
+ namenode2:
+    build: ./namenode
+    image: risdenk/elasticsearch_hdfs_kerberos_testing:namenode
+
  datanode:
     build: ./datanode
     image: risdenk/elasticsearch_hdfs_kerberos_testing:datanode

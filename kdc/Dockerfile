@@ -10,13 +10,16 @@ COPY krb5.conf /etc/docker-kdc/krb5.conf
 
 EXPOSE 88
 
-# Add kerberos principal/s.
+# Add kerberos principals.
 RUN kadmin -l add --password=nn --use-defaults hdfs/namenode.example.com@EXAMPLE.COM && \
+    kadmin -l add --password=nnhttp --use-defaults HTTP/namenode.example.com@EXAMPLE.COM && \
+    kadmin -l add --password=nn2 --use-defaults hdfs/namenode2.example.com@EXAMPLE.COM && \
+    kadmin -l add --password=nn2http --use-defaults HTTP/namenode2.example.com@EXAMPLE.COM && \
     kadmin -l add --password=dn --use-defaults hdfs/datanode.example.com@EXAMPLE.COM && \
     kadmin -l add --password=es --use-defaults hdfs/elasticsearch.example.com@EXAMPLE.COM
 
 # Export keytab.
-RUN kadmin -l ext_keytab -k /etc/docker-kdc/nn.service.keytab hdfs/namenode.example.com@EXAMPLE.COM && \
+RUN kadmin -l ext_keytab -k /etc/docker-kdc/nn.service.keytab hdfs/namenode.example.com@EXAMPLE.COM HTTP/namenode.example.com@EXAMPLE.COM hdfs/namenode2.example.com@EXAMPLE.COM HTTP/namenode2.example.com@EXAMPLE.COM && \
     kadmin -l ext_keytab -k /etc/docker-kdc/dn.service.keytab hdfs/datanode.example.com@EXAMPLE.COM && \
     kadmin -l ext_keytab -k /etc/docker-kdc/elasticsearch.keytab hdfs/elasticsearch.example.com@EXAMPLE.COM
 
